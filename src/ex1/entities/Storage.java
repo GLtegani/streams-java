@@ -21,8 +21,12 @@ public class Storage {
       this.getProductList().remove(product);
    }
 
-   public final Double averagePrice() {
-      this.getProductList().
+   public final Double getAveragePrice() {
+      Double sum = 0.0;
+      for(Product product : this.getProductList()) {
+         sum += product.getPrice();
+      }
+      return sum / this.getProductList().size();
    }
 
 }

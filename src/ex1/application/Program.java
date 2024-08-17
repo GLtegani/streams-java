@@ -6,10 +6,7 @@ import ex1.entities.Storage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 public class Program {
    public static void main(String[] args) {
@@ -28,11 +25,23 @@ public class Program {
             String name = parts[0];
             Double price = Double.parseDouble(parts[1]);
             storage.addProduct(new Product(name, price));
-
-
-
             line = br.readLine();
          }
+
+         double avg = storage.getProductList().stream()
+                 .map(Product::getPrice)
+                 .reduce(0.0, (x, y) -> x + y / storage.getProductList().size());
+
+         System.out.print("Average price: " + String.format("%.2f \n", storage.getAveragePrice()));
+         System.out.print("Average price: " + String.format("%.2f \n", avg));
+         Comparator<String> comparator = Comparator.comparing(String::toUpperCase);
+         List<String> names = storage.getProductList().stream()
+                 .filter(p -> p.getPrice() < storage.getAveragePrice())
+                 .map(Product::getName)
+                 .sorted(comparator.reversed()).toList();
+         names.forEach(System.out::println);
+
+
 
       } catch (IOException e) {
          System.err.print("ERROR:" + e.getMessage());
